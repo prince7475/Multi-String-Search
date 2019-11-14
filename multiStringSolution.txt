@@ -1,0 +1,49 @@
+Input --> "this is a big string", ['this', 'yo', 'is', 'a', 'bigger', 'string', 'kappa']
+out --> [True, False, True, True, False, True, False
+
+
+function multiStringSearch(bigString, smallString){
+  const trie = new Trie(bigString.split(" "))
+  let result = [] 
+  for(let i = 0; i < smallString.length; i ++){
+    result[i] = trie.contains(smallString[i])
+  }
+  return result
+}
+
+class Trie {
+  constructor(arr){
+    this.root = this.createTrie(arr)
+  }
+  
+  createTrie(arr){
+    let root = {}
+    for(let word of arr){
+      this.addWord(word, root)
+    }
+    return root;
+  }
+  
+  addWord(word,root){
+    for(let i = 0; i < word.length; i++){
+      let node = root
+      for(let j = i; j < word.length; j++){
+        let curr = word[j]
+        if(!(curr in node)) node[curr] = {}
+        node = node[curr]
+      }
+      node["*"] = true
+    }
+  }
+  
+  contains(word){
+    let node = this.root
+    for(let i = 0; i < word.length; i++){
+      let curr = word[i]
+      if(!(curr in node)) return false
+      node = node[curr]
+    }
+    return true
+  }
+  
+}
