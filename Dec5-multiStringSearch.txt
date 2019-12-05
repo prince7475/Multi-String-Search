@@ -1,0 +1,51 @@
+Write a function that takes in a "big" string and an array of"small" strings,
+all of which are smaller in length than the big string. The function should return an
+array of booleans, where each boolean represents whether or not the small
+string at that index in the array of small strings is contained in the big string. Note
+that you cannot use language-built-in string-matching methods.
+
+Sample input:"this is a big string", ["this","yo","is","a","bigger","string","kappa"]
+Sample output: [True, False, True, True, False, True, False]
+
+function multiStringSearch(bigString,smallStrings){
+  const trie = new Trie()
+  let strArr = bigString.split(" ")
+  for(let word of strArr){
+    trie.add(word)
+  }
+  let result = []
+  for(let i = 0; i < smallStrings.length; i++){
+    let word = smallStrings[i]
+    result[i] = trie.contains(word)
+  }
+  
+  return result
+}
+
+
+
+class Trie{
+  constructor(){
+    this.root = {}
+  }
+  
+  add(word){
+    let node = this.root
+    for(let letter of word){
+      if(!(letter in node)) node[letter] = {}
+      node = node[letter]
+    }
+    node["*"] = word
+  } // void
+  
+  contains(word){
+  let node = this.root
+  for(let i = 0; i < word.length; i++){
+    let letter = word[i]
+    if(!(letter in node)) return false
+    node = node[letter]
+  }
+    return true
+  }// boolean
+}
+
